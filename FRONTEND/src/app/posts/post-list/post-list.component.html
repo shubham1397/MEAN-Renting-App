@@ -1,0 +1,83 @@
+
+
+
+<hr>
+<div style="text-align: center;
+font-size: 20px;" *ngIf="!posts.length">
+  <B>Items not available</B>
+</div>
+<div class="site-section">
+  <div class="container">
+    <div class="row">
+      <div *ngIf="isloading" style="text-align: center;" class="loading-text">
+        <app-spinner></app-spinner>
+     </div>
+      <div class="col-lg-10">
+        <div class="d-block d-md-flex podcast-entry bg-white mb-5 aos-init aos-animate"
+          *ngFor="let post of posts;let i=index" data-aos="fade-up">
+          <div class="image" [style.backgroundImage]="'url('+ post.imagePath +') ' "></div>
+          <div class="text">
+            <h3 class="font-weight-dark">
+              <a [routerLink]="[post.id]"> {{ post.title }}</a>
+            </h3>
+            <div class="text-white mb-3">
+              <span class="text-black-opacity-05" *ngFor="let  user of postbyUser">
+                <small *ngIf="user.creator === post.creator">
+                  <a [routerLink]="['public', user.username]">by {{user.username}}</a><span class="sep"> /
+                  </span>{{post.itemDate | date:'short'}}</small>
+              </span>
+            </div>
+
+            <div class="desc">
+              <div class="row no-gutters">
+                  <div class="col">
+                    <label>Description :</label>
+                  </div>
+                  <div class="col">
+                <p>{{post.content |slice:0: 170 }}
+                  <a [routerLink]="[post.id]">{{post.content.length > 170 ? '...Read More' : ''}}</a></p>
+                  </div>
+              </div>
+              <div  class="row no-gutters">
+                  <div class="col">
+                    <label>Manufacture date :</label>
+                  </div>
+                  <div class="col left">
+                    <p>{{post.mdate }}
+                  </div>
+              </div>
+
+              <div  class="row no-gutters">
+                <div class="col">
+                  <label>Actual Cost :</label>
+                </div>
+                <div class="col left">
+                  <p>{{post.cost}}
+                </div>
+            </div>
+
+
+            <div  class="row no-gutters">
+              <div class="col">
+                <label>Rent Price :</label>
+              </div>
+              <div  class="col left">
+                <p >{{post.isFree ? 'Free' : post.rent}}</p>
+              </div>
+          </div>
+
+
+            </div>
+
+<div>
+  <button  [disabled]="isUser(post.creator)" (click)="buyOnRent(post.id)" class="btn btn-primary"  type="submit">
+    Buy On Rent
+  </button>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

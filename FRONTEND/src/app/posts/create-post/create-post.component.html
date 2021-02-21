@@ -1,0 +1,133 @@
+<hr />
+<div class="container">
+  <div *ngIf="isLoading" style="text-align: center" class="loading-text">
+    <app-spinner></app-spinner>
+  </div>
+  <form [formGroup]="form" (submit)="onSaveItem()">
+    <div class="form-group">
+      <input
+        type="text"
+        formControlName="title"
+        class="form-control"
+        placeholder="Item Title"
+      />
+      <span
+        class="text-danger"
+        *ngIf="form.get('title').invalid && form.get('title').touched"
+        >Please enter a item title.</span
+      >
+    </div>
+    <div class="form-group">
+      <button
+        type="button"
+        class="btn btn-outline-success"
+        (click)="filePicker.click()"
+      >
+        Pick Image
+      </button>
+      <input
+        type="file"
+        class="form-control"
+        #filePicker
+        (change)="onImagePicked($event)"
+      />
+
+      <div
+        class="image-preview"
+        *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid"
+      >
+        <img [src]="imagePreview" [alt]="form.value.title" />
+      </div>
+      <span
+        class="text-danger"
+        *ngIf="form.get('image').invalid && form.dirty && form.touched"
+        >Please Choose a valid image.</span
+      >
+    </div>
+    <div class="form-group">
+      <textarea
+        class="form-control"
+        rows="4"
+        formControlName="content"
+        placeholder="Item Content"
+      ></textarea>
+      <span
+        class="text-danger"
+        *ngIf="form.get('content').invalid && form.get('content').touched"
+        >Please enter a item content.</span
+      >
+    </div>
+
+    <div class="form-group">
+      <input
+        type="number"
+        formControlName="cost"
+        class="form-control"
+        placeholder="Actual Cost Of The Item in Rs."
+      />
+
+      <span
+        class="text-danger"
+        *ngIf="form.get('cost').invalid && form.get('cost').touched"
+        >Please enter actual cost price.</span
+      >
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-2">
+          <label for="vehicle1"> Is Free ?</label><br />
+        </div>
+        <div class="col-1 left">
+          <input style="height: 25px;"
+            type="checkbox"
+            formControlName="isFree"
+            (change)="checkIsFree($event)"
+            class="form-control"
+          />
+        </div>
+        <div class="col-10">
+      </div>
+      </div>
+    </div>
+
+    <div *ngIf="!form.value.isFree" class="form-group">
+      <input
+        type="number"
+        formControlName="rent"
+        class="form-control"
+        placeholder="Rent Price in Rs."
+      />
+
+      <span
+      class="text-danger"
+      *ngIf="form.get('rent').invalid && form.get('rent').touched"
+      >Please enter rent price.</span
+    >
+      <span
+        class="text-danger"
+        *ngIf="form.hasError('gretter') && form.get('rent').touched"
+        >rent price must be lower than actual cost price</span
+      >
+    </div>
+
+    <div class="form-group">
+      <input
+        type="text"
+        formControlName="mdate"
+        class="form-control"
+        placeholder="Manufacture Date"
+        onfocus="(this.type='date')"
+      />
+      <span
+        class="text-danger"
+        *ngIf="form.get('mdate').invalid && form.get('mdate').touched"
+        >Please enter a manufacture date.</span
+      >
+    </div>
+
+    <button class="btn btn-primary" [disabled]="isValid()" type="submit">
+      Save Item
+    </button>
+  </form>
+</div>

@@ -1,0 +1,143 @@
+<div class="container">
+  <div class="alert alert-danger" *ngIf="error">
+    <p>{{ error.status }} - {{ error.error.message }}</p>
+  </div>
+  <div *ngIf="isloading" style="text-align: center" class="loading-text">
+    <app-spinner></app-spinner>
+  </div>
+  <div class="row">
+    <div class="col-md-3 col-xs-12" *ngIf="isAuth && url == 'myposts'">
+      <div class="list-group">
+        <a
+          [routerLink]="['../edit', postId]"
+          class="list-group-item list-group-item-action"
+        >
+          Edit Item
+        </a>
+        <a
+          data-toggle="modal"
+          data-target="#exampleModal"
+          class="list-group-item list-group-item-action"
+          >Delete Item</a
+        >
+      </div>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Delete Confirmation Box
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Please click on Confirm button to Delete the item permanently
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-dismiss="modal"
+                (click)="OnDelete(postId)"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-9 main" *ngIf="post">
+      <div class="card-body">
+        <h1>{{ post.title }}</h1>
+        <div class="text-white mb-3">
+          <span class="text-black-opacity-05">
+            <small *ngIf="profile">
+              <a [routerLink]="['../public', profile.username]"
+                >by {{ profile.username }}</a
+              >
+
+              <span class="sep"> / </span
+              >{{ post.itemDate | date: "short" }}</small
+            >
+          </span>
+        </div>
+
+        <div class="img">
+          <img
+            src="{{ post.imagePath }}"
+            alt=""
+            class="img-responsive center"
+          />
+        </div>
+        <hr />
+
+        <div class="desc">
+          <div class="row no-gutters">
+            <div class="col">
+              <label>Description :</label>
+            </div>
+            <div class="col">
+              <p>
+                {{ post.content | slice: 0:170 }}
+                <a [routerLink]="[post.id]">{{
+                  post.content.length > 170 ? "...Read More" : ""
+                }}</a>
+              </p>
+            </div>
+          </div>
+          <div class="row no-gutters">
+            <div class="col">
+              <label>Manufacture date :</label>
+            </div>
+            <div class="col left">
+              <p>{{ post.mdate }}</p>
+            </div>
+          </div>
+
+          <div class="row no-gutters">
+            <div class="col">
+              <label>Actual Cost :</label>
+            </div>
+            <div class="col left">
+              <p>{{ post.cost }}</p>
+            </div>
+          </div>
+
+          <div class="row no-gutters">
+            <div class="col">
+              <label>Rent Price :</label>
+            </div>
+            <div class="col left">
+              <p>{{ post.isFree ? "Free" : post.rent }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
